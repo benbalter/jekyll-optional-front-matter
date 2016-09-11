@@ -33,7 +33,7 @@ module JekyllOptionalFrontMatter
     end
 
     def markdown_converter
-      site.find_converter_instance(Jekyll::Converters::Markdown)
+      @markdown_converter ||= site.find_converter_instance(Jekyll::Converters::Markdown)
     end
   end
 end
