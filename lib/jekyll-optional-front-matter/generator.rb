@@ -2,7 +2,7 @@ module JekyllOptionalFrontMatter
   class Generator < Jekyll::Generator
     attr_accessor :site
 
-    safe :true
+    safe true
     priority :low
 
     def initialize(site)
