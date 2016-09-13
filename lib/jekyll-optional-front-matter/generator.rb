@@ -12,13 +12,21 @@ module JekyllOptionalFrontMatter
     def generate(site)
       @site = site
       return if site.config["require_front_matter"]
-      site.pages.concat(pages)
+      site.pages.concat(pages_to_add)
     end
 
     private
 
+    def pages_to_add
+      pages.reject { |page| blacklisted?(page) }
+    end
+
     def pages
       markdown_files.map { |static_file| page_from_static_file(static_file) }
+    end
+
+    def markdown_files
+      site.static_files.select { |f| markdown_converter.matches(f.extname) }
     end
 
     def page_from_static_file(static_file)
@@ -28,8 +36,8 @@ module JekyllOptionalFrontMatter
       Jekyll::Page.new(site, base, dir, name)
     end
 
-    def markdown_files
-      site.static_files.select { |f| markdown_converter.matches(f.extname) }
+    def blacklisted?(page)
+      FILENAME_BLACKLIST.include?(page.basename.upcase)
     end
 
     def markdown_converter
