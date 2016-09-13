@@ -46,7 +46,7 @@ def with_page(path, content: nil, site: nil)
   content ||= "# #{name}"
   FileUtils.mkdir_p File.join(base, dir)
   File.write(full_path, content)
-  
+
   page = Jekyll::Page.new(site, base, dir, name)
   yield(page)
   File.delete(full_path)
