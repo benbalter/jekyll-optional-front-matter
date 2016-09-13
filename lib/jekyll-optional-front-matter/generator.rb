@@ -17,18 +17,22 @@ module JekyllOptionalFrontMatter
 
     private
 
+    # An array of Jekyll::Pages to add, *excluding* blacklisted files
     def pages_to_add
       pages.reject { |page| blacklisted?(page) }
     end
 
+    # An array of potential Jekyll::Pages to add, *including* blacklisted files
     def pages
       markdown_files.map { |static_file| page_from_static_file(static_file) }
     end
 
+    # An array of Jekyll::StaticFile's with a site-defined markdown extension
     def markdown_files
       site.static_files.select { |f| markdown_converter.matches(f.extname) }
     end
 
+    # Given a Jekyll::StaticFile, returns the file as a Jekyll::Page
     def page_from_static_file(static_file)
       base = static_file.instance_variable_get("@base")
       dir  = static_file.instance_variable_get("@dir")
@@ -36,6 +40,7 @@ module JekyllOptionalFrontMatter
       Jekyll::Page.new(site, base, dir, name)
     end
 
+    # Does the given Jekyll::Page match our filename blacklist?
     def blacklisted?(page)
       FILENAME_BLACKLIST.include?(page.basename.upcase)
     end
