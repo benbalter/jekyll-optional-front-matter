@@ -27,6 +27,10 @@ This plugin does just that. Any Markdown file in your site's source will be trea
     - jekyll-optional-front-matter
   ```
 
+## One potential gotcha
+
+In order to preserve backwards compatability, the plugin does not recognize [a short list of common meta files](https://github.com/benbalter/jekyll-optional-front-matter/blob/master/lib/jekyll-optional-front-matter.rb#L4). If you want Markdown files like your README, CONTRIBUTING file, CODE_OF_CONDUCT, or LICENSE, etc., you'll need to explicitly add YAML front matter to the file.
+
 ## Disabling
 
 Even if the plugin is enabled (e.g., via the `:jekyll_plugins` group in your Gemfile) you can disable it by adding the following to your site's config:
