@@ -60,6 +60,28 @@ describe JekyllOptionalFrontMatter::Generator do
     end
   end
 
+  context "building" do
+    %w(index file another-file).each do |file|
+      context "building #{file}.html" do
+        before { site.process }
+
+        let(:path) { File.join(site.dest, "#{file}.html") }
+        let(:content) { File.read(path) }
+        let(:expected_content) do
+          "<h1 id=\"#{file}\">#{file.capitalize.tr("-", " ")}</h1>\n"
+        end
+
+        it "has a .html extension" do
+          expect(path).to be_an_existing_file
+        end
+
+        it "renders markdown to HTML" do
+          expect(expected_content).to eql(content)
+        end
+      end
+    end
+  end
+
   context "when disabled" do
     let(:site) { fixture_site("site", { "require_front_matter" => true }) }
     context "generating" do
