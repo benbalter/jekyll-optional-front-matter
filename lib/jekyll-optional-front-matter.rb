@@ -1,4 +1,5 @@
 require "jekyll"
+require "jekyll-optional-front-matter/generator"
 
 module JekyllOptionalFrontMatter
   # Case-insensitive array of filenames to exclude. All files must first
@@ -14,6 +15,4 @@ module JekyllOptionalFrontMatter
     ISSUE_TEMPLATE
     PULL_REQUEST_TEMPLATE
   ).freeze
-
-  autoload :Generator, "jekyll-optional-front-matter/generator"
 end
