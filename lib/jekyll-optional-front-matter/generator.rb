@@ -3,7 +3,7 @@ module JekyllOptionalFrontMatter
     attr_accessor :site
 
     safe true
-    priority :low
+    priority :normal
 
     def initialize(site)
       @site = site
