@@ -48,11 +48,15 @@ module JekyllOptionalFrontMatter
 
     def whitelisted?(page)
       return false unless site.config["include"].is_a? Array
-      site.config["include"].include?(page.path)
+      entry_filter.included?(page.path)
     end
 
     def markdown_converter
       @markdown_converter ||= site.find_converter_instance(Jekyll::Converters::Markdown)
+    end
+
+    def entry_filter
+      @entry_filter ||= Jekyll::EntryFilter.new(site)
     end
   end
 end
