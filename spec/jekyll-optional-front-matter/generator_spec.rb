@@ -122,6 +122,7 @@ describe JekyllOptionalFrontMatter::Generator do
       it "matches #{filename}" do
         with_page(filename) do |page|
           expect(generator.send(:blacklisted?, page)).to eql(true)
+          expect(generator.send(:whitelisted?, page)).to eql(false)
         end
       end
     end
