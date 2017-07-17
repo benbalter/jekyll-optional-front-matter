@@ -42,7 +42,13 @@ module JekyllOptionalFrontMatter
 
     # Does the given Jekyll::Page match our filename blacklist?
     def blacklisted?(page)
+      return false if whitelisted?(page)
       FILENAME_BLACKLIST.include?(page.basename.upcase)
+    end
+
+    def whitelisted?(page)
+      return false unless site.config["include"].is_a? Array
+      site.config["include"].include?(page.path)
     end
 
     def markdown_converter

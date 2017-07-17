@@ -105,6 +105,8 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   context "blacklist" do
+    let(:site) { fixture_site("site", { "include" => ["foo.md"] }) }
+
     %w(
       README.md
       readme.markdown
@@ -128,6 +130,18 @@ describe JekyllOptionalFrontMatter::Generator do
       it "doesn't match #{filename}" do
         with_page(filename) do |page|
           expect(generator.send(:blacklisted?, page)).to eql(false)
+          expect(generator.send(:whitelisted?, page)).to eql(false)
+        end
+      end
+    end
+
+    context "whitelist" do
+      let(:site) { fixture_site("site", { "include" => ["CONTRIBUTING.md"] }) }
+
+      it "whitelists whitelisted files" do
+        with_page("CONTRIBUTING.md") do |page|
+          expect(generator.send(:blacklisted?, page)).to eql(false)
+          expect(generator.send(:whitelisted?, page)).to eql(true)
         end
       end
     end
