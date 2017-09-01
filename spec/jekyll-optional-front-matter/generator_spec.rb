@@ -5,6 +5,7 @@ describe JekyllOptionalFrontMatter::Generator do
   let(:markdown_files) { generator.send(:markdown_files) }
   let(:pages) { generator.send(:pages) }
   let(:pages_to_add) { generator.send(:pages_to_add) }
+  let(:static_files_to_remove) { generator.send(:static_files_to_remove) }
 
   before do
     site.reset
@@ -47,6 +48,14 @@ describe JekyllOptionalFrontMatter::Generator do
     expect(names).to include("another-file.markdown")
   end
 
+  it "builds the array of static files to remove" do
+    expect(static_files_to_remove.count).to eql(2)
+    names = pages_to_add.map(&:name)
+    expect(names).to_not include("readme.md")
+    expect(names).to include("file.md")
+    expect(names).to include("another-file.markdown")
+  end
+
   context "generating" do
     before { generator.generate(site) }
 
@@ -83,7 +92,10 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   context "when disabled" do
-    let(:site) { fixture_site("site", { "require_front_matter" => true }) }
+    let(:site) do
+      fixture_site("site", { "optional_front_matter" => { "disabled" => true } })
+    end
+
     context "generating" do
       before { generator.generate(site) }
 
@@ -94,11 +106,14 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   context "when explicitly enabled" do
-    let(:site) { fixture_site("site", { "require_front_matter" => false }) }
+    let(:site) do
+      fixture_site("site", { "optional_front_matter" => { "disabled" => false } })
+    end
+
     context "generating" do
       before { generator.generate(site) }
 
-      it "doesn't add the pages to the site" do
+      it "does add the pages to the site" do
         expect(site.pages.count).to eql(3)
       end
     end
@@ -143,6 +158,63 @@ describe JekyllOptionalFrontMatter::Generator do
         with_page("CONTRIBUTING.md") do |page|
           expect(generator.send(:blacklisted?, page)).to eql(false)
           expect(generator.send(:whitelisted?, page)).to eql(true)
+        end
+      end
+    end
+  end
+
+  context "cleanup" do
+    let(:site) do
+      fixture_site("site", { "optional_front_matter" => { "remove_originals" => true } })
+    end
+
+    context "generating" do
+      before { generator.generate(site) }
+
+      it "adds the pages to the site" do
+        expect(site.pages.count).to eql(3)
+        names = site.pages.map(&:name)
+        expect(names).to_not include("readme.md")
+        expect(names).to include("file.md")
+        expect(names).to include("another-file.markdown")
+        expect(names).to include("index.md")
+      end
+
+      it "removes the originals" do
+        names = site.static_files.map(&:relative_path)
+        expect(names).to_not include("/file.md")
+        expect(names).to_not include("/another-file.markdown")
+        expect(names).to_not include("/index.md")
+      end
+
+      it "does not remove blacklisted static files"
+        expect(site.static_files.count).to eql(2)
+        names = site.static_files.map(&:relative_path)
+        expect(names).to include("/readme.md")
+        expect(names).to include("/CONTRIBUTING")
+      end
+    end
+  end
+
+  context "legacy" do
+    context "when disabled" do
+      let(:site) { fixture_site("site", { "require_front_matter" => true }) }
+      context "generating" do
+        before { generator.generate(site) }
+
+        it "doesn't add the pages to the site" do
+          expect(site.pages.count).to eql(1)
+        end
+      end
+    end
+
+    context "when explicitly enabled" do
+      let(:site) { fixture_site("site", { "require_front_matter" => false }) }
+      context "generating" do
+        before { generator.generate(site) }
+
+        it "does add the pages to the site" do
+          expect(site.pages.count).to eql(3)
         end
       end
     end

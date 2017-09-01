@@ -5,14 +5,19 @@ module JekyllOptionalFrontMatter
     safe true
     priority :normal
 
+    CONFIG_KEY = "optional_front_matter".freeze
+    DISABLED_KEY = "disabled".freeze
+    CLEANUP_KEY = "remove_originals".freeze
+
     def initialize(site)
       @site = site
     end
 
     def generate(site)
       @site = site
-      return if site.config["require_front_matter"]
+      return if disabled?
       site.pages.concat(pages_to_add)
+      site.static_files -= static_files_to_remove if cleanup?
     end
 
     private
@@ -20,6 +25,11 @@ module JekyllOptionalFrontMatter
     # An array of Jekyll::Pages to add, *excluding* blacklisted files
     def pages_to_add
       pages.reject { |page| blacklisted?(page) }
+    end
+
+    # An array of Jekyll::StaticFile's, *excluding* blacklisted files
+    def static_files_to_remove
+      markdown_files.reject { |page| blacklisted?(page) }
     end
 
     # An array of potential Jekyll::Pages to add, *including* blacklisted files
@@ -48,7 +58,7 @@ module JekyllOptionalFrontMatter
 
     def whitelisted?(page)
       return false unless site.config["include"].is_a? Array
-      entry_filter.included?(page.path)
+      entry_filter.included?(page.relative_path)
     end
 
     def markdown_converter
@@ -57,6 +67,18 @@ module JekyllOptionalFrontMatter
 
     def entry_filter
       @entry_filter ||= Jekyll::EntryFilter.new(site)
+    end
+
+    def option(key)
+      site.config[CONFIG_KEY] && site.config[CONFIG_KEY][key]
+    end
+
+    def disabled?
+      option(DISABLED_KEY) || site.config["require_front_matter"]
+    end
+
+    def cleanup?
+      option(CLEANUP_KEY) || site.config["require_front_matter"]
     end
   end
 end
