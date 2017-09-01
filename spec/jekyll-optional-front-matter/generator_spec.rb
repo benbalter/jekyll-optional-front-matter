@@ -187,7 +187,7 @@ describe JekyllOptionalFrontMatter::Generator do
         expect(names).to_not include("/index.md")
       end
 
-      it "does not remove blacklisted static files"
+      it "does not remove blacklisted static files" do
         expect(site.static_files.count).to eql(2)
         names = site.static_files.map(&:relative_path)
         expect(names).to include("/readme.md")
