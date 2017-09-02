@@ -44,7 +44,7 @@ You can configure this plugin in `_config.yml` by adding to the `optional_front_
 
 ### Removing originals
 
-By default the original markdown files will be included as static pages in the output. To remove them from the output, add the `remove_originals` key:
+By default the original markdown files will be included as static pages in the output. To remove them from the output, set the `remove_originals` key to `true`:
 
 ```yml
 optional_front_matter:

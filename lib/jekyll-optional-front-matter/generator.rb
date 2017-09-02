@@ -78,7 +78,7 @@ module JekyllOptionalFrontMatter
     end
 
     def cleanup?
-      option(CLEANUP_KEY) || site.config["require_front_matter"]
+      option(CLEANUP_KEY) == true || site.config["require_front_matter"]
     end
   end
 end
