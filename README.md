@@ -29,7 +29,7 @@ This plugin does just that. Any Markdown file in your site's source will be trea
 
 ## One potential gotcha
 
-In order to preserve backwards compatability, the plugin does not recognize [a short list of common meta files](https://github.com/benbalter/jekyll-optional-front-matter/blob/master/lib/jekyll-optional-front-matter.rb#L4).
+In order to preserve backwards compatibility, the plugin does not recognize [a short list of common meta files](https://github.com/benbalter/jekyll-optional-front-matter/blob/master/lib/jekyll-optional-front-matter.rb#L4).
 
 If you want Markdown files like your README, CONTRIBUTING file, CODE_OF_CONDUCT, or LICENSE, etc., you'll need to explicitly add YAML front matter to the file, or add it to your config's list of `include` files, e.g.:
 
