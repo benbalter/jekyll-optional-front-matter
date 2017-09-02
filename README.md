@@ -57,5 +57,5 @@ Even if the plugin is enabled (e.g., via the `:jekyll_plugins` group in your Gem
 
 ```yml
 optional_front_matter:
-  disabled: true
+  enabled: false
 ```

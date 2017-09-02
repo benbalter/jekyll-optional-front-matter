@@ -93,7 +93,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "when disabled" do
     let(:site) do
-      fixture_site("site", { "optional_front_matter" => { "disabled" => true } })
+      fixture_site("site", { "optional_front_matter" => { "enabled" => false } })
     end
 
     context "generating" do
@@ -107,7 +107,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "when explicitly enabled" do
     let(:site) do
-      fixture_site("site", { "optional_front_matter" => { "disabled" => false } })
+      fixture_site("site", { "optional_front_matter" => { "enabled" => true } })
     end
 
     context "generating" do
