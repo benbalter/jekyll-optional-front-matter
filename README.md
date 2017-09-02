@@ -39,10 +39,23 @@ include:
   - README.md
 ```
 
-## Disabling
+## Configuration
+You can configure this plugin in `_config.yml` by adding to the `optional_front_matter` key.
+
+### Removing originals
+
+By default the original markdown files will be included as static pages in the output. To remove them from the output, add the `remove_originals` key:
+
+```yml
+optional_front_matter:
+  remove_originals: true
+```
+
+### Disabling
 
 Even if the plugin is enabled (e.g., via the `:jekyll_plugins` group in your Gemfile) you can disable it by adding the following to your site's config:
 
 ```yml
-require_front_matter: true
+optional_front_matter:
+  disabled: true
 ```
