@@ -29,7 +29,7 @@ This plugin does just that. Any Markdown file in your site's source will be trea
 
 ## One potential gotcha
 
-In order to preserve backwards compatability, the plugin does not recognize [a short list of common meta files](https://github.com/benbalter/jekyll-optional-front-matter/blob/master/lib/jekyll-optional-front-matter.rb#L4).
+In order to preserve backwards compatibility, the plugin does not recognize [a short list of common meta files](https://github.com/benbalter/jekyll-optional-front-matter/blob/master/lib/jekyll-optional-front-matter.rb#L4).
 
 If you want Markdown files like your README, CONTRIBUTING file, CODE_OF_CONDUCT, or LICENSE, etc., you'll need to explicitly add YAML front matter to the file, or add it to your config's list of `include` files, e.g.:
 
@@ -44,7 +44,7 @@ You can configure this plugin in `_config.yml` by adding to the `optional_front_
 
 ### Removing originals
 
-By default the original markdown files will be included as static pages in the output. To remove them from the output, add the `remove_originals` key:
+By default the original markdown files will be included as static pages in the output. To remove them from the output, set the `remove_originals` key to `true`:
 
 ```yml
 optional_front_matter:
@@ -57,5 +57,5 @@ Even if the plugin is enabled (e.g., via the `:jekyll_plugins` group in your Gem
 
 ```yml
 optional_front_matter:
-  disabled: true
+  enabled: false
 ```

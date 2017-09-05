@@ -6,7 +6,7 @@ module JekyllOptionalFrontMatter
     priority :normal
 
     CONFIG_KEY = "optional_front_matter".freeze
-    DISABLED_KEY = "disabled".freeze
+    ENABLED_KEY = "enabled".freeze
     CLEANUP_KEY = "remove_originals".freeze
 
     def initialize(site)
@@ -74,11 +74,11 @@ module JekyllOptionalFrontMatter
     end
 
     def disabled?
-      option(DISABLED_KEY) || site.config["require_front_matter"]
+      option(ENABLED_KEY) == false || site.config["require_front_matter"]
     end
 
     def cleanup?
-      option(CLEANUP_KEY) || site.config["require_front_matter"]
+      option(CLEANUP_KEY) == true || site.config["require_front_matter"]
     end
   end
 end
