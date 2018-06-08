@@ -34,10 +34,10 @@ This plugin does just that. Any Markdown file in your site's source will be trea
 3. Add the following to your site's config file:
 
     ```yml
-    gems:
+    plugins:
     - jekyll-optional-front-matter
     ```
-
+Note: If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
 
 ## One potential gotcha
 
