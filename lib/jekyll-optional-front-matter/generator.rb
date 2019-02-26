@@ -9,6 +9,7 @@ module JekyllOptionalFrontMatter
 
     CONFIG_KEY = "optional_front_matter".freeze
     ENABLED_KEY = "enabled".freeze
+    COLLECTIONS_KEY = "collections".freeze
     CLEANUP_KEY = "remove_originals".freeze
 
     def initialize(site)
@@ -20,6 +21,7 @@ module JekyllOptionalFrontMatter
       return if disabled?
       site.pages.concat(pages_to_add)
       site.static_files -= static_files_to_remove if cleanup?
+      collections_to_convert.each_value(&method(:convert_collection)) if collections?
     end
 
     private
@@ -52,6 +54,27 @@ module JekyllOptionalFrontMatter
       Jekyll::Page.new(site, base, dir, name)
     end
 
+    # Jekyll::Collections to convert Jekyll::StaticFiles to Jekyll::Documents
+    def collections_to_convert
+      site.collections.select { |k, _| !Jekyll::CollectionReader::SPECIAL_COLLECTIONS.include?(k) }
+    end
+
+    # Given a Jekyll::Collection, read Jekyll::StaticFile as Jekyll::Document
+    def convert_collection(collection)
+      file_names = collection.files.select { |file| markdown_converter.matches(file.extname) }.map(&:name)
+      full_paths = file_names.map { |e| collection.collection_dir(e) }
+      full_paths.each do |full_path|
+        next if File.directory?(full_path)
+        doc = Jekyll::Document.new(full_path, :site => site, :collection => collection)
+        doc.read
+        if site.unpublished || doc.published?
+          collection.docs << doc
+        end
+      end
+      collection.docs.sort!
+      collection.files.reject! { |file| markdown_converter.matches(file.extname) } if cleanup?
+    end
+
     # Does the given Jekyll::Page match our filename blacklist?
     def blacklisted?(page)
       return false if whitelisted?(page)
@@ -77,6 +100,10 @@ module JekyllOptionalFrontMatter
 
     def disabled?
       option(ENABLED_KEY) == false || site.config["require_front_matter"]
+    end
+
+    def collections?
+      option(COLLECTIONS_KEY) == true && !site.config["require_front_matter"]
     end
 
     def cleanup?

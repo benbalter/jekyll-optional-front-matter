@@ -219,4 +219,76 @@ describe JekyllOptionalFrontMatter::Generator do
       end
     end
   end
+
+  context "collections" do
+    context "when output false" do
+      let(:site) { fixture_site("site", { :collections => ["foo"] }) }
+      before { site.process }
+
+      it "does not output markdown files with front matter" do
+        expect(site.docs_to_write.count).to eql(2)
+        site.docs_to_write.map(&:url).each do |url|
+          expect(File.join(site.dest, url)).to be_an_existing_file
+        end
+        names = site.docs_to_write.map { |doc| File.basename(doc.url) }
+        expect(names).to include("no-front-matter.md")
+        expect(names).to include("raw.txt")
+      end
+    end
+
+    context "when output true" do
+      let(:site) { fixture_site("site", { :collections => { "foo" => { "output" => true } } }) }
+      before { site.process }
+
+      it "does convert markdown files with front matter into html" do
+        expect(site.docs_to_write.count).to eql(3)
+        site.docs_to_write.map(&:url).each do |url|
+          expect(File.join(site.dest, url)).to be_an_existing_file
+        end
+        names = site.docs_to_write.map { |doc| File.basename(doc.url) }
+        expect(names).to include("yes-front-matter.html")
+        expect(names).to include("no-front-matter.md")
+        expect(names).to include("raw.txt")
+      end
+    end
+
+    context "when collections true" do
+      let(:site) { fixture_site("site", {
+          :collections => { "foo" => { "output" => true } },
+          :optional_front_matter => { "collections" => true }
+      }) }
+      before { site.process }
+
+      it "also converts markdown files without front matter into html" do
+        expect(site.docs_to_write.count).to eql(4)
+        site.docs_to_write.map(&:url).each do |url|
+          expect(File.join(site.dest, url)).to be_an_existing_file
+        end
+        names = site.docs_to_write.map { |doc| File.basename(doc.url) }
+        expect(names).to include("yes-front-matter.html")
+        expect(names).to include("no-front-matter.md")
+        expect(names).to include("no-front-matter.html")
+        expect(names).to include("raw.txt")
+      end
+    end
+
+    context "when remove_originals false" do
+      let(:site) { fixture_site("site", {
+          :collections => { "foo" => { "output" => true } },
+          :optional_front_matter => { "collections" => true, "remove_originals" => true }
+      }) }
+      before { site.process }
+
+      it "also removes markdown files without front matter after converting into html" do
+        expect(site.docs_to_write.count).to eql(3)
+        site.docs_to_write.map(&:url).each do |url|
+          expect(File.join(site.dest, url)).to be_an_existing_file
+        end
+        names = site.docs_to_write.map { |doc| File.basename(doc.url) }
+        expect(names).to include("yes-front-matter.html")
+        expect(names).to include("no-front-matter.html")
+        expect(names).to include("raw.txt")
+      end
+    end
+  end
 end
