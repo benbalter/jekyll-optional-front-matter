@@ -8,3 +8,5 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
+
+require: rubocop-performance

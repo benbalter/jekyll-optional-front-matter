@@ -7,9 +7,9 @@ module JekyllOptionalFrontMatter
     safe true
     priority :normal
 
-    CONFIG_KEY = "optional_front_matter".freeze
-    ENABLED_KEY = "enabled".freeze
-    CLEANUP_KEY = "remove_originals".freeze
+    CONFIG_KEY = "optional_front_matter"
+    ENABLED_KEY = "enabled"
+    CLEANUP_KEY = "remove_originals"
 
     def initialize(site)
       @site = site
@@ -18,6 +18,7 @@ module JekyllOptionalFrontMatter
     def generate(site)
       @site = site
       return if disabled?
+
       site.pages.concat(pages_to_add)
       site.static_files -= static_files_to_remove if cleanup?
     end
@@ -55,11 +56,13 @@ module JekyllOptionalFrontMatter
     # Does the given Jekyll::Page match our filename blacklist?
     def blacklisted?(page)
       return false if whitelisted?(page)
+
       FILENAME_BLACKLIST.include?(page.basename.upcase)
     end
 
     def whitelisted?(page)
       return false unless site.config["include"].is_a? Array
+
       entry_filter.included?(page.relative_path)
     end
 
