@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe JekyllOptionalFrontMatter::Generator do
   let(:site) { fixture_site("site") }
   let(:generator) { described_class.new(site) }
@@ -93,7 +95,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "when disabled" do
     let(:site) do
-      fixture_site("site", { "optional_front_matter" => { "enabled" => false } })
+      fixture_site("site", "optional_front_matter" => { "enabled" => false })
     end
 
     context "generating" do
@@ -107,7 +109,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "when explicitly enabled" do
     let(:site) do
-      fixture_site("site", { "optional_front_matter" => { "enabled" => true } })
+      fixture_site("site", "optional_front_matter" => { "enabled" => true })
     end
 
     context "generating" do
@@ -120,7 +122,7 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   context "blacklist" do
-    let(:site) { fixture_site("site", { "include" => ["foo.md"] }) }
+    let(:site) { fixture_site("site", "include" => ["foo.md"]) }
 
     %w(
       README.md
@@ -152,7 +154,7 @@ describe JekyllOptionalFrontMatter::Generator do
     end
 
     context "whitelist" do
-      let(:site) { fixture_site("site", { "include" => ["CONTRIBUTING.md"] }) }
+      let(:site) { fixture_site("site", "include" => ["CONTRIBUTING.md"]) }
 
       it "whitelists whitelisted files" do
         with_page("CONTRIBUTING.md") do |page|
@@ -165,7 +167,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "cleanup" do
     let(:site) do
-      fixture_site("site", { "optional_front_matter" => { "remove_originals" => true } })
+      fixture_site("site", "optional_front_matter" => { "remove_originals" => true })
     end
 
     context "generating" do
@@ -198,7 +200,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "legacy" do
     context "when disabled" do
-      let(:site) { fixture_site("site", { "require_front_matter" => true }) }
+      let(:site) { fixture_site("site", "require_front_matter" => true) }
       context "generating" do
         before { generator.generate(site) }
 
@@ -209,7 +211,7 @@ describe JekyllOptionalFrontMatter::Generator do
     end
 
     context "when explicitly enabled" do
-      let(:site) { fixture_site("site", { "require_front_matter" => false }) }
+      let(:site) { fixture_site("site", "require_front_matter" => false) }
       context "generating" do
         before { generator.generate(site) }
 

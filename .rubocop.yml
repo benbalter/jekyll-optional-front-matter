@@ -1,5 +1,6 @@
+require: rubocop-jekyll
 inherit_gem:
-  jekyll: .rubocop.yml
+  rubocop-jekyll: .rubocop.yml
 
 AllCops:
   Exclude:
@@ -8,5 +9,3 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
-
-require: rubocop-performance
