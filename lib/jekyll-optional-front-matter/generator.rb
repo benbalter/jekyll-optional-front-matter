@@ -57,25 +57,26 @@ module JekyllOptionalFrontMatter
 
     # Jekyll::Collections to convert Jekyll::StaticFiles to Jekyll::Documents
     def collections_to_convert
-      site.collections.select { |k, _| !Jekyll::CollectionReader::SPECIAL_COLLECTIONS.include?(k) }
+      site.collections.reject { |k, _| !Jekyll::CollectionReader::SPECIAL_COLLECTIONS.include?(k) }
     end
 
     # Given a Jekyll::Collection, read Jekyll::StaticFile as Jekyll::Document
     def convert_collection(collection)
-      file_names = collection.files.select { |file| markdown_converter.matches(file.extname) }.map(&:name)
+      file_names = collection.files.select {
+          |file| markdown_converter.matches(file.extname)
+         }.map(&:name)
       full_paths = file_names.map { |e| collection.collection_dir(e) }
       full_paths.each do |full_path|
         next if File.directory?(full_path)
+
         doc = Jekyll::Document.new(full_path, :site => site, :collection => collection)
         doc.read
-        if site.unpublished || doc.published?
-          collection.docs << doc
-        end
+
+        collection.docs << doc if site.unpublished || doc.published?
       end
       collection.docs.sort!
       collection.files.reject! { |file| markdown_converter.matches(file.extname) } if cleanup?
     end
-
 
     # Does the given Jekyll::Page match our filename blacklist?
     def blacklisted?(page)
