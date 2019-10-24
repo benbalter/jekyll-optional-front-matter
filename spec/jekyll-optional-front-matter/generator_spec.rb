@@ -60,7 +60,7 @@ describe JekyllOptionalFrontMatter::Generator do
 
   context "collections" do
     context "when output false" do
-      let(:site) { fixture_site("site", { :collections => ["foo"] }) }
+      let(:site) { fixture_site("site", :collections => ["foo"]) }
       before { site.process }
 
       it "does not output markdown files with front matter" do
@@ -75,7 +75,7 @@ describe JekyllOptionalFrontMatter::Generator do
     end
 
     context "when output true" do
-      let(:site) { fixture_site("site", { :collections => { "foo" => { "output" => true } } }) }
+      let(:site) { fixture_site("site", :collections => { "foo" => { "output" => true } }) }
       before { site.process }
 
       it "does convert markdown files with front matter into html" do
@@ -91,10 +91,11 @@ describe JekyllOptionalFrontMatter::Generator do
     end
 
     context "when collections true" do
-      let(:site) { fixture_site("site", {
-          :collections => { "foo" => { "output" => true } },
-          :optional_front_matter => { "collections" => true }
-      }) }
+      let(:site)
+      fixture_site("site", {
+          :collections => {  "foo" => { "output" => true } },
+          :optional_front_matter => {  "collections" => true },
+      })
       before { site.process }
 
       it "also converts markdown files without front matter into html" do
@@ -111,10 +112,10 @@ describe JekyllOptionalFrontMatter::Generator do
     end
 
     context "when remove_originals false" do
-      let(:site) { fixture_site("site", {
+      let(:site) fixture_site("site", {
           :collections => { "foo" => { "output" => true } },
           :optional_front_matter => { "collections" => true, "remove_originals" => true }
-      }) }
+      })
       before { site.process }
 
       it "also removes markdown files without front matter after converting into html" do
