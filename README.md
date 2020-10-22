@@ -15,28 +15,29 @@ This plugin does just that. Any Markdown file in your site's source will be trea
 ## Usage
 
 1. Add the following to your site's Gemfile:
-
     ```ruby
-    gem 'jekyll-optional-front-matter'
+    group :jekyll_plugins do
+      gem 'jekyll-optional-front-matter'
+    end
     ```
-
-2. Install with Gem or Bundler
-
-    ```bash
-    $ gem install jekyll-optional-front-matter # May need sudo
-    ```
-    If the above does not work try:
-
-      ```bash
-      $ bundler install jekyll-optional-front-matter # May need sudo
-      ```
-
+2. Install the plugin.
+    - Using Bundler.
+        ```bash
+        $ bundler install
+        ```
+    - Using Gem.
+        ```bash
+        $ # Install in your user's home directory.
+        $ gem install jekyll-optional-front-matter --user-install
+        $ # Install for root user.
+        $ sudo gem install jekyll-optional-front-matter
+        ```
 3. Add the following to your site's config file:
-
     ```yml
     plugins:
-    - jekyll-optional-front-matter
+      - jekyll-optional-front-matter
     ```
+
 Note: If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
 
 ## One potential gotcha
