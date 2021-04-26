@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+Taik# frozen_string_literal: true
 
 require "jekyll"
 require "jekyll-optional-front-matter/generator"
