@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.5"
 
   s.add_runtime_dependency "jekyll", ">= 3.0", "< 5.0"
+  s.add_development_dependency "kramdown-parser-gfm", "~> 1.0"
   s.add_development_dependency "rspec", "~> 3.5"
   s.add_development_dependency "rubocop", "~> 1.18"
   s.add_development_dependency "rubocop-jekyll", "~> 0.10"
