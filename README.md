@@ -2,7 +2,7 @@
 
 A Jekyll plugin to make front matter optional for Markdown files
 
-[![Build Status](https://travis-ci.org/benbalter/jekyll-optional-front-matter.svg?branch=master)](https://travis-ci.org/benbalter/jekyll-optional-front-matter)
+[![CI](https://github.com/benbalter/jekyll-optional-front-matter/actions/workflows/ci.yml/badge.svg)](https://github.com/benbalter/jekyll-optional-front-matter/actions/workflows/ci.yml)
 
 ## What it does
 
