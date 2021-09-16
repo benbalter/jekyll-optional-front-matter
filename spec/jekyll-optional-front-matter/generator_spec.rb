@@ -19,7 +19,7 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   it "grabs the markdown files" do
-    expect(markdown_files.count).to eql(3)
+    expect(markdown_files.count).to be(3)
     paths = markdown_files.map(&:relative_path)
     expect(paths).to include("/readme.md")
     expect(paths).to include("/file.md")
@@ -35,7 +35,7 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   it "builds the array of pages" do
-    expect(pages.count).to eql(3)
+    expect(pages.count).to be(3)
     names = pages.map(&:name)
     expect(names).to include("readme.md")
     expect(names).to include("file.md")
@@ -43,17 +43,17 @@ describe JekyllOptionalFrontMatter::Generator do
   end
 
   it "builds the array of pages to add" do
-    expect(pages_to_add.count).to eql(2)
+    expect(pages_to_add.count).to be(2)
     names = pages_to_add.map(&:name)
-    expect(names).to_not include("readme.md")
+    expect(names).not_to include("readme.md")
     expect(names).to include("file.md")
     expect(names).to include("another-file.markdown")
   end
 
   it "builds the array of static files to remove" do
-    expect(static_files_to_remove.count).to eql(2)
+    expect(static_files_to_remove.count).to be(2)
     names = pages_to_add.map(&:name)
-    expect(names).to_not include("readme.md")
+    expect(names).not_to include("readme.md")
     expect(names).to include("file.md")
     expect(names).to include("another-file.markdown")
   end
@@ -62,9 +62,9 @@ describe JekyllOptionalFrontMatter::Generator do
     before { generator.generate(site) }
 
     it "adds the pages to the site" do
-      expect(site.pages.count).to eql(3)
+      expect(site.pages.count).to be(3)
       names = site.pages.map(&:name)
-      expect(names).to_not include("readme.md")
+      expect(names).not_to include("readme.md")
       expect(names).to include("file.md")
       expect(names).to include("another-file.markdown")
       expect(names).to include("index.md")
@@ -102,7 +102,7 @@ describe JekyllOptionalFrontMatter::Generator do
       before { generator.generate(site) }
 
       it "doesn't add the pages to the site" do
-        expect(site.pages.count).to eql(1)
+        expect(site.pages.count).to be(1)
       end
     end
   end
@@ -116,7 +116,7 @@ describe JekyllOptionalFrontMatter::Generator do
       before { generator.generate(site) }
 
       it "does add the pages to the site" do
-        expect(site.pages.count).to eql(3)
+        expect(site.pages.count).to be(3)
       end
     end
   end
@@ -138,8 +138,8 @@ describe JekyllOptionalFrontMatter::Generator do
     ).each do |filename|
       it "matches #{filename}" do
         with_page(filename) do |page|
-          expect(generator.send(:blacklisted?, page)).to eql(true)
-          expect(generator.send(:whitelisted?, page)).to eql(false)
+          expect(generator.send(:blacklisted?, page)).to be(true)
+          expect(generator.send(:whitelisted?, page)).to be(false)
         end
       end
     end
@@ -147,8 +147,8 @@ describe JekyllOptionalFrontMatter::Generator do
     %w(index.md INDEX.markdown).each do |filename|
       it "doesn't match #{filename}" do
         with_page(filename) do |page|
-          expect(generator.send(:blacklisted?, page)).to eql(false)
-          expect(generator.send(:whitelisted?, page)).to eql(false)
+          expect(generator.send(:blacklisted?, page)).to be(false)
+          expect(generator.send(:whitelisted?, page)).to be(false)
         end
       end
     end
@@ -158,8 +158,8 @@ describe JekyllOptionalFrontMatter::Generator do
 
       it "whitelists whitelisted files" do
         with_page("CONTRIBUTING.md") do |page|
-          expect(generator.send(:blacklisted?, page)).to eql(false)
-          expect(generator.send(:whitelisted?, page)).to eql(true)
+          expect(generator.send(:blacklisted?, page)).to be(false)
+          expect(generator.send(:whitelisted?, page)).to be(true)
         end
       end
     end
@@ -174,9 +174,9 @@ describe JekyllOptionalFrontMatter::Generator do
       before { generator.generate(site) }
 
       it "adds the pages to the site" do
-        expect(site.pages.count).to eql(3)
+        expect(site.pages.count).to be(3)
         names = site.pages.map(&:name)
-        expect(names).to_not include("readme.md")
+        expect(names).not_to include("readme.md")
         expect(names).to include("file.md")
         expect(names).to include("another-file.markdown")
         expect(names).to include("index.md")
@@ -184,13 +184,13 @@ describe JekyllOptionalFrontMatter::Generator do
 
       it "removes the originals" do
         names = site.static_files.map(&:relative_path)
-        expect(names).to_not include("/file.md")
-        expect(names).to_not include("/another-file.markdown")
-        expect(names).to_not include("/index.md")
+        expect(names).not_to include("/file.md")
+        expect(names).not_to include("/another-file.markdown")
+        expect(names).not_to include("/index.md")
       end
 
       it "does not remove blacklisted static files" do
-        expect(site.static_files.count).to eql(2)
+        expect(site.static_files.count).to be(2)
         names = site.static_files.map(&:relative_path)
         expect(names).to include("/readme.md")
         expect(names).to include("/CONTRIBUTING")
@@ -201,22 +201,24 @@ describe JekyllOptionalFrontMatter::Generator do
   context "legacy" do
     context "when disabled" do
       let(:site) { fixture_site("site", "require_front_matter" => true) }
+
       context "generating" do
         before { generator.generate(site) }
 
         it "doesn't add the pages to the site" do
-          expect(site.pages.count).to eql(1)
+          expect(site.pages.count).to be(1)
         end
       end
     end
 
     context "when explicitly enabled" do
       let(:site) { fixture_site("site", "require_front_matter" => false) }
+
       context "generating" do
         before { generator.generate(site) }
 
         it "does add the pages to the site" do
-          expect(site.pages.count).to eql(3)
+          expect(site.pages.count).to be(3)
         end
       end
     end
