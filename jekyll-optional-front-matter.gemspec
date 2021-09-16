@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
 
   s.add_runtime_dependency "jekyll", ">= 3.0", "< 5.0"
+  s.add_development_dependency "kramdown-parser-gfm", "~> 1.0"
   s.add_development_dependency "rspec", "~> 3.5"
   s.add_development_dependency "rubocop", "~> 0.71"
   s.add_development_dependency "rubocop-jekyll", "~> 0.10"
