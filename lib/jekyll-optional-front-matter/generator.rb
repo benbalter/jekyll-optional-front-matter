@@ -19,11 +19,24 @@ module JekyllOptionalFrontMatter
       @site = site
       return if disabled?
 
-      site.pages.concat(pages_to_add)
+      # Add pages to the site
+      pages_to_add.each do |page|
+        # Pre-convert the content of pages without front matter to ensure
+        # page.content contains HTML instead of Markdown
+        convert_content(page)
+        site.pages << page
+      end
+
       site.static_files -= static_files_to_remove if cleanup?
     end
 
     private
+
+    # Convert markdown content to HTML for the page
+    def convert_content(page)
+      renderer = Jekyll::Renderer.new(site, page)
+      page.content = renderer.convert(page.content)
+    end
 
     # An array of Jekyll::Pages to add, *excluding* blacklisted files
     def pages_to_add
@@ -47,9 +60,9 @@ module JekyllOptionalFrontMatter
 
     # Given a Jekyll::StaticFile, returns the file as a Jekyll::Page
     def page_from_static_file(static_file)
-      base = static_file.instance_variable_get("@base")
-      dir  = static_file.instance_variable_get("@dir")
-      name = static_file.instance_variable_get("@name")
+      base = static_file.instance_variable_get(:@base)
+      dir  = static_file.instance_variable_get(:@dir)
+      name = static_file.instance_variable_get(:@name)
       Jekyll::Page.new(site, base, dir, name)
     end
 
