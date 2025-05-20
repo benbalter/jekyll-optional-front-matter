@@ -60,9 +60,9 @@ module JekyllOptionalFrontMatter
 
     # Given a Jekyll::StaticFile, returns the file as a Jekyll::Page
     def page_from_static_file(static_file)
-      base = static_file.instance_variable_get("@base")
-      dir  = static_file.instance_variable_get("@dir")
-      name = static_file.instance_variable_get("@name")
+      base = static_file.instance_variable_get(:@base)
+      dir  = static_file.instance_variable_get(:@dir)
+      name = static_file.instance_variable_get(:@name)
       Jekyll::Page.new(site, base, dir, name)
     end
 
