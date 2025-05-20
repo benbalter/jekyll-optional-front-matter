@@ -5,3 +5,4 @@ Gemfile.lock
 spec/fixtures/site/.jekyll-cache/
 vendor/
 .bundle/
+spec/fixtures/tmp/.jekyll-cache/
