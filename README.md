@@ -12,6 +12,10 @@ While that behavior may be helpful for large, complex sites, sometimes it's easi
 
 This plugin does just that. Any Markdown file in your site's source will be treated as a Page and rendered as HTML, even if it doesn't have YAML front matter.
 
+## Content Conversion
+
+The plugin automatically converts Markdown content to HTML when adding pages without front matter to the site. This ensures that `page.content` contains properly formatted HTML rather than raw Markdown, making it compatible with themes and plugins that expect HTML content during site generation.
+
 ## Usage
 
 1. Add the following to your site's Gemfile:

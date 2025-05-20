@@ -10,29 +10,64 @@ describe JekyllOptionalFrontMatter::Generator do
   before do
     site.reset
     site.read
-    generator.generate(site)
   end
 
   context "before site processing" do
-    it "has markdown in the content of pages without front matter" do
+    it "has markdown in the content of pages before generator runs" do
+      # Find the file.md static file
+      file_md = markdown_files.find { |f| f.name == "file.md" }
+      
+      # Create a page without running the generator
+      page = generator.send(:page_from_static_file, file_md)
+      puts "Before generator - Page content: #{page.content.inspect}"
+      
+      # The content should be markdown at this point
+      expect(page.content).to eq("# File\n")
+    end
+  end
+  
+  context "after generator runs" do
+    before do
+      generator.generate(site)
+    end
+    
+    it "converts markdown content to HTML for pages without front matter" do
       # Get a page that has been added by the plugin (without front matter)
       page = site.pages.find { |p| p.name == "file.md" }
-      puts "Before processing - Page content: #{page.content.inspect}"
+      puts "After generator - Page without FM content: #{page.content.inspect}"
       
-      # The content should still be markdown at this point
-      expect(page.content).to eq("# File\n")
+      # The content should be HTML after the generator runs
+      expect(page.content).not_to eq("# File\n")
+      expect(page.content).to include("<h1")
+    end
+    
+    it "does not affect pages with front matter" do
+      # Add a page with front matter
+      index_file = site.static_files.find { |f| f.name == "index.md" }
+      site.pages << Jekyll::Page.new(site, index_file.instance_variable_get("@base"), 
+                                    index_file.instance_variable_get("@dir"),
+                                    index_file.instance_variable_get("@name"))
+      
+      # Get the page with front matter  
+      page = site.pages.find { |p| p.name == "index.md" }
+      puts "After generator - Page with FM content: #{page.content.inspect}"
+      
+      # The content should still be markdown at this point for regular pages
+      # that will be processed normally by Jekyll
+      expect(page.content).to eq("# Index\n")
     end
   end
 
   context "after site processing" do
     before do
+      generator.generate(site)
       site.process
     end
 
-    it "converts markdown content to HTML for pages without front matter" do
+    it "maintains HTML content for pages without front matter" do
       # Get a page that has been added by the plugin (without front matter)
       page = site.pages.find { |p| p.name == "file.md" }
-      puts "After processing - Page content: #{page.content.inspect}"
+      puts "After processing - Page without FM content: #{page.content.inspect}"
       
       # The page output property should contain HTML
       expect(page.output).to include("<h1 id=\"file\">File</h1>")
@@ -45,7 +80,7 @@ describe JekyllOptionalFrontMatter::Generator do
     it "converts markdown content to HTML for pages with front matter" do
       # Get a page with front matter
       page = site.pages.find { |p| p.name == "index.md" }
-      puts "Index page content: #{page.content.inspect}"
+      puts "After processing - Page with FM content: #{page.content.inspect}"
       
       # The content property should be HTML
       expect(page.content).not_to eq("# Index\n")
