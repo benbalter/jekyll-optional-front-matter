@@ -31,14 +31,13 @@ describe JekyllOptionalFrontMatter::Generator do
       generator.generate(site)
     end
 
-    it "converts markdown content to HTML for pages without front matter" do
-      # Get a page that has been added by the plugin (without front matter)
-      page = site.pages.find { |p| p.name == "file.md" }
-      puts "After generator - Page without FM content: #{page.content.inspect}"
+    it "keeps pages sorted after adding file.md without front matter" do
+      filenames = site.pages.map(&:name)
+      file_index = filenames.index("file.md")
+      index_index = filenames.index("index.md")
 
-      # The content should be HTML after the generator runs
-      expect(page.content).not_to eq("# File\n")
-      expect(page.content).to include("<h1")
+      # Verify the order of pages
+      expect(file_index).to be < index_index
     end
 
     it "does not affect pages with front matter" do

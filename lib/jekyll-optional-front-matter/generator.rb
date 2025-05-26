@@ -19,14 +19,8 @@ module JekyllOptionalFrontMatter
       @site = site
       return if disabled?
 
-      # Add pages to the site
-      pages_to_add.each do |page|
-        # Pre-convert the content of pages without front matter to ensure
-        # page.content contains HTML instead of Markdown
-        convert_content(page)
-        site.pages << page
-      end
-
+      site.pages.concat(pages_to_add)
+      site.pages.sort_by!(&:name)
       site.static_files -= static_files_to_remove if cleanup?
     end
 
