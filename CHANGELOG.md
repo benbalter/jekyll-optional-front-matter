@@ -2,4 +2,4 @@
 
 ## Unreleased
 
-* Fixed issue where `page.content` contained Markdown text rather than HTML for pages without front matter. The plugin now converts Markdown content to HTML immediately when adding pages to the site.
+* Fixed issue where `page.content` contained Markdown text rather than HTML for pages without front matter when applying a template. This was caused by pages without front matter being rendered after all other pages.
