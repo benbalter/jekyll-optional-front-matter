@@ -1,0 +1,12 @@
+collections:
+  posts:
+    output: true
+  articles:
+    output: true
+    permalink: /:collection/:name/
+
+optional_front_matter:
+  remove_originals: true
+
+plugins:
+  - jekyll-optional-front-matter
