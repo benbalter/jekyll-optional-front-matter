@@ -10,11 +10,20 @@ Out of the box, Jekyll requires that any markdown file have YAML front matter (k
 
 While that behavior may be helpful for large, complex sites, sometimes it's easier to simply add a plain markdown file and have it render without fanfare.
 
-This plugin does just that. Any Markdown file in your site's source will be treated as a Page and rendered as HTML, even if it doesn't have YAML front matter.
+This plugin does just that. Any Markdown file in your site's source will be treated as a Page and rendered as HTML, even if it doesn't have YAML front matter. Additionally, any Markdown file in a collection directory will be treated as a collection document and rendered as HTML, even without front matter.
 
 ## Content Conversion
 
-The plugin automatically converts Markdown content to HTML when adding pages without front matter to the site. This ensures that `page.content` contains properly formatted HTML rather than raw Markdown, making it compatible with themes and plugins that expect HTML content during site generation.
+The plugin automatically converts Markdown content to HTML when adding pages and collection documents without front matter to the site. This ensures that `page.content` and `document.content` contain properly formatted HTML rather than raw Markdown, making it compatible with themes and plugins that expect HTML content during site generation.
+
+## Collections Support
+
+This plugin works with both regular pages and Jekyll collections. For collections:
+
+- Files with front matter work as they normally would
+- Files without front matter in collection directories (e.g., `_posts/`, `_articles/`) will be automatically processed and added to the collection
+- The processed documents will have their Markdown content converted to HTML
+- When `remove_originals` is enabled, the original static files will be removed from the output
 
 ## Usage
 
