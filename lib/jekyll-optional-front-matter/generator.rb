@@ -26,12 +26,6 @@ module JekyllOptionalFrontMatter
 
     private
 
-    # Convert markdown content to HTML for the page
-    def convert_content(page)
-      renderer = Jekyll::Renderer.new(site, page)
-      page.content = renderer.convert(page.content)
-    end
-
     # An array of Jekyll::Pages to add, *excluding* blacklisted files
     def pages_to_add
       pages.reject { |page| blacklisted?(page) }
