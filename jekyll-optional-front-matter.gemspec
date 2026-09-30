@@ -10,6 +10,14 @@ Gem::Specification.new do |s|
   s.email         = ["ben.balter@github.com"]
   s.homepage      = "https://github.com/benbalter/jekyll-optional-front-matter"
   s.summary       = "A Jekyll plugin to make front matter optional for Markdown files"
+  s.description   = "Jekyll plugin to render Markdown files that have no YAML front matter. " \
+                    "Supported on GitHub Pages."
+  s.metadata      = {
+    "homepage_uri"    => "https://github.com/benbalter/jekyll-optional-front-matter",
+    "source_code_uri" => "https://github.com/benbalter/jekyll-optional-front-matter",
+    "bug_tracker_uri" => "https://github.com/benbalter/jekyll-optional-front-matter/issues",
+    "changelog_uri"   => "https://github.com/benbalter/jekyll-optional-front-matter/releases",
+  }
 
   s.files         = `git ls-files app lib`.split("\n")
   s.platform      = Gem::Platform::RUBY

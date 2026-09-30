@@ -1,6 +1,6 @@
 # Jekyll Optional Front Matter
 
-A Jekyll plugin to make front matter optional for Markdown files
+Jekyll plugin to render Markdown files that have no YAML front matter. Supported on GitHub Pages.
 
 [![CI](https://github.com/benbalter/jekyll-optional-front-matter/actions/workflows/ci.yml/badge.svg)](https://github.com/benbalter/jekyll-optional-front-matter/actions/workflows/ci.yml)
 
