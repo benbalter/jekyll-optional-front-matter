@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4
+
+* Add a gemspec description and RubyGems metadata (homepage, source code, bug tracker, and changelog links), and lead the README with the same one-line description (#56)
+* Declare `required_ruby_version >= 3.0` (#50)
+* Remove the unused private `Generator#convert_content` method; no behavior change (#55)
+* Move dependency updates to Renovate; bump `actions/checkout` to v7 and `github/codeql-action` to v4 (#53, #54)
+
 ## 0.3.3
 
 * Fixed issue where `page.content` contained Markdown text rather than HTML for pages without front matter when applying a template. This was caused by pages without front matter being rendered after all other pages. (#43)
