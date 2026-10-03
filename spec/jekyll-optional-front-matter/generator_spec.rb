@@ -121,7 +121,7 @@ describe JekyllOptionalFrontMatter::Generator do
     end
   end
 
-  context "blacklist" do
+  context "denylist" do
     let(:site) { fixture_site("site", "include" => ["foo.md"]) }
 
     %w(
@@ -138,8 +138,8 @@ describe JekyllOptionalFrontMatter::Generator do
     ).each do |filename|
       it "matches #{filename}" do
         with_page(filename) do |page|
-          expect(generator.send(:blacklisted?, page)).to be(true)
-          expect(generator.send(:whitelisted?, page)).to be(false)
+          expect(generator.send(:denylisted?, page)).to be(true)
+          expect(generator.send(:explicitly_included?, page)).to be(false)
         end
       end
     end
@@ -147,19 +147,19 @@ describe JekyllOptionalFrontMatter::Generator do
     %w(index.md INDEX.markdown).each do |filename|
       it "doesn't match #{filename}" do
         with_page(filename) do |page|
-          expect(generator.send(:blacklisted?, page)).to be(false)
-          expect(generator.send(:whitelisted?, page)).to be(false)
+          expect(generator.send(:denylisted?, page)).to be(false)
+          expect(generator.send(:explicitly_included?, page)).to be(false)
         end
       end
     end
 
-    context "whitelist" do
+    context "explicitly included" do
       let(:site) { fixture_site("site", "include" => ["CONTRIBUTING.md"]) }
 
-      it "whitelists whitelisted files" do
+      it "includes explicitly included files" do
         with_page("CONTRIBUTING.md") do |page|
-          expect(generator.send(:blacklisted?, page)).to be(false)
-          expect(generator.send(:whitelisted?, page)).to be(true)
+          expect(generator.send(:denylisted?, page)).to be(false)
+          expect(generator.send(:explicitly_included?, page)).to be(true)
         end
       end
     end
@@ -189,7 +189,7 @@ describe JekyllOptionalFrontMatter::Generator do
         expect(names).not_to include("/index.md")
       end
 
-      it "does not remove blacklisted static files" do
+      it "does not remove denylisted static files" do
         expect(site.static_files.count).to be(2)
         names = site.static_files.map(&:relative_path)
         expect(names).to include("/readme.md")
