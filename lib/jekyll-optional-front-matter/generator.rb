@@ -26,17 +26,17 @@ module JekyllOptionalFrontMatter
 
     private
 
-    # An array of Jekyll::Pages to add, *excluding* blacklisted files
+    # An array of Jekyll::Pages to add, *excluding* denylisted files
     def pages_to_add
-      pages.reject { |page| blacklisted?(page) }
+      pages.reject { |page| denylisted?(page) }
     end
 
-    # An array of Jekyll::StaticFile's, *excluding* blacklisted files
+    # An array of Jekyll::StaticFile's, *excluding* denylisted files
     def static_files_to_remove
-      markdown_files.reject { |page| blacklisted?(page) }
+      markdown_files.reject { |page| denylisted?(page) }
     end
 
-    # An array of potential Jekyll::Pages to add, *including* blacklisted files
+    # An array of potential Jekyll::Pages to add, *including* denylisted files
     def pages
       markdown_files.map { |static_file| page_from_static_file(static_file) }
     end
@@ -54,14 +54,15 @@ module JekyllOptionalFrontMatter
       Jekyll::Page.new(site, base, dir, name)
     end
 
-    # Does the given Jekyll::Page match our filename blacklist?
-    def blacklisted?(page)
-      return false if whitelisted?(page)
+    # Does the given Jekyll::Page match our filename denylist?
+    def denylisted?(page)
+      return false if explicitly_included?(page)
 
-      FILENAME_BLACKLIST.include?(page.basename.upcase)
+      FILENAME_DENYLIST.include?(page.basename.upcase)
     end
 
-    def whitelisted?(page)
+    # Is the given Jekyll::Page explicitly listed in the site's `include` config?
+    def explicitly_included?(page)
       return false unless site.config["include"].is_a? Array
 
       entry_filter.included?(page.relative_path)
