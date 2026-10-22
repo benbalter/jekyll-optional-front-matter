@@ -77,7 +77,8 @@ module JekyllOptionalFrontMatter
     end
 
     def option(key)
-      site.config[CONFIG_KEY] && site.config[CONFIG_KEY][key]
+      config = site.config[CONFIG_KEY]
+      config[key] if config.is_a?(Hash)
     end
 
     def disabled?

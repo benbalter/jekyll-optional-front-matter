@@ -121,6 +121,20 @@ describe JekyllOptionalFrontMatter::Generator do
     end
   end
 
+  [true, %w(enabled)].each do |value|
+    context "when the config is #{value.inspect} instead of a hash" do
+      let(:site) { fixture_site("site", "optional_front_matter" => value) }
+
+      context "generating" do
+        before { generator.generate(site) }
+
+        it "ignores the config and adds the pages to the site" do
+          expect(site.pages.count).to be(3)
+        end
+      end
+    end
+  end
+
   context "denylist" do
     let(:site) { fixture_site("site", "include" => ["foo.md"]) }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Ignore a non-hash `optional_front_matter` config instead of crashing the build (#67)
+
 ## 0.3.4
 
 * Add a gemspec description and RubyGems metadata (homepage, source code, bug tracker, and changelog links), and lead the README with the same one-line description (#56)
