@@ -77,11 +77,14 @@ module JekyllOptionalFrontMatter
     end
 
     def option(key)
-      site.config[CONFIG_KEY] && site.config[CONFIG_KEY][key]
+      config = site.config[CONFIG_KEY]
+      config[key] if config.is_a?(Hash)
     end
 
+    # `optional_front_matter: false` is shorthand for `enabled: false`
     def disabled?
-      option(ENABLED_KEY) == false || site.config["require_front_matter"]
+      site.config[CONFIG_KEY] == false || option(ENABLED_KEY) == false ||
+        site.config["require_front_matter"]
     end
 
     def cleanup?
