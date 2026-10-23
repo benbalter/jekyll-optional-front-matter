@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-* Ignore a non-hash `optional_front_matter` config instead of crashing the build (#67)
+* Ignore a non-hash `optional_front_matter` config instead of crashing the build. `optional_front_matter: false` still disables the plugin (#67, #69). Thanks to [@anyingiit](https://github.com/anyingiit).
 
 ## 0.3.4
 

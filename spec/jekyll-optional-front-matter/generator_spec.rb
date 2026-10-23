@@ -107,6 +107,18 @@ describe JekyllOptionalFrontMatter::Generator do
     end
   end
 
+  context "when the config is false" do
+    let(:site) { fixture_site("site", "optional_front_matter" => false) }
+
+    context "generating" do
+      before { generator.generate(site) }
+
+      it "doesn't add the pages to the site" do
+        expect(site.pages.count).to be(1)
+      end
+    end
+  end
+
   context "when explicitly enabled" do
     let(:site) do
       fixture_site("site", "optional_front_matter" => { "enabled" => true })
